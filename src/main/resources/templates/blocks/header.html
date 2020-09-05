@@ -7,7 +7,8 @@
     <div class="site-mobile-menu-body"></div>
 </div>
 
-<header class="header-bar d-flex d-lg-flex align-items-center" th:classappend="${#strings.equals(pageTitle, 'Home page')? '' : 'inner-page-header'}"
+<header class="header-bar d-flex d-lg-flex align-items-center"
+        th:classappend="${(#httpServletRequest.requestURL.toString().contains('index')) ? '' : 'inner-page-header'}"
         data-aos="fade-down" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
     <div class="site-logo">
         <a href="/">Carpathians Blog</a>
