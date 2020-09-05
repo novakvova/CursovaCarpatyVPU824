@@ -23,7 +23,7 @@
                             <div th:text="${post.getFullText()}"></div>
 
                             <div class="mt-3 mb-4">
-                                <img th:src="@{'get-image/' + ${post.getImage()}}" src="" alt="image" class="img-fluid w-100">
+                                <img th:src="@{'/get-image/' + ${post.getImage()}}" src="" alt="image" class="img-fluid w-100">
                             </div>
                         </div>
                     </div>
