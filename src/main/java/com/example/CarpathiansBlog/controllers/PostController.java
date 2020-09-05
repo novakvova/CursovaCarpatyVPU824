@@ -2,6 +2,8 @@ package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.models.Post;
 import com.example.CarpathiansBlog.repo.PostRepository;
+import com.example.CarpathiansBlog.services.StorageService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,9 +28,12 @@ import java.util.UUID;
 public class PostController {
     private final PostRepository postRepository;
 
+    private final StorageService storageService;
+
     @Autowired
-    public PostController(PostRepository postRepository) {
+    public PostController(PostRepository postRepository, StorageService storageService) {
         this.postRepository = postRepository;
+        this.storageService = storageService;
     }
 
     @GetMapping("/post/add-post")
@@ -45,17 +53,29 @@ public class PostController {
         Post post;
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             try {
-                Path path = Paths.get("src/main/resources/static/images");
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFileName = uuidFile + file.getOriginalFilename();
+                String name = UUID.randomUUID().toString()+"." +
+                        FilenameUtils.getExtension(file.getOriginalFilename());
+
+                byte[] bytes = file.getBytes();
+
+                Path f = storageService.load("");
+                String rootPath= f.toUri().getPath();
+                System.out.println("---------"+rootPath);
+                File dir = new File(rootPath + File.separator );
+                // Create the file on server
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + name);
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+
                 post = new Post();
+                post.setImage(name);
                 post.setAnons(anons);
                 post.setFullText(fullText);
                 post.setTitle(title);
                 post.setViews(0);
-                InputStream inputStream = file.getInputStream();
-                Files.copy(inputStream, path.resolve(resultFileName), StandardCopyOption.REPLACE_EXISTING);
-                post.setImage(resultFileName);
                 postRepository.save(post);
                 model.addAttribute("pageTitle", "Succeed");
                 return "add-succeed";
