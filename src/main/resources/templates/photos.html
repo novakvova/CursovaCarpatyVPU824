@@ -2,15 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title th:text="${pageTitle}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <th:block th:include="blocks/style-files.html :: headerfiles"></th:block>
 </head>
 <body>
-<div class="site-wrap">
+<div class="site-wrap w-100">
     <th:block th:insert="blocks/header :: siteMenu"></th:block>
     <th:block th:insert="blocks/header :: header"></th:block>
-
     <main class="main-content">
         <div class="container-fluid photos">
             <div class="row align-items-stretch">
