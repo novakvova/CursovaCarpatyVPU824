@@ -8,14 +8,11 @@
     <th:block th:include="blocks/style-files.html :: headerfiles"></th:block>
 </head>
 <body>
-
-<div class="site-wrap">
+<div class="site-wrap w-100">
     <th:block th:insert="blocks/header :: siteMenu"></th:block>
     <th:block th:insert="blocks/header :: header"></th:block>
     <div class="swiper-container gallery-top">
-
-        <div class="swiper-wrapper">
-
+        <div class="swiper-wrapper">w
             <div class="swiper-slide cover" th:each="itemPost , iStat  : ${posts}"
                  th:style="'background-image: url(get-image/' + ${itemPost.getImage()} + ');'">
                 <a th:href="@{'get-image/' + ${itemPost.getImage()}}" data-fancybox="gallery" class="zoom"><span class="icon-search"></span></a>
