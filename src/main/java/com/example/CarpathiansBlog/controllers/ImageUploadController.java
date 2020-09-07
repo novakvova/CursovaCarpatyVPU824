@@ -1,8 +1,6 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.services.StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,16 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Controller
 public class ImageUploadController {
 
     private final StorageService storageService;
 
-    @Autowired
     public ImageUploadController(StorageService storageService) {
         this.storageService = storageService;
     }

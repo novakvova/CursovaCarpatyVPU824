@@ -1,10 +1,12 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.models.Post;
+import com.example.CarpathiansBlog.models.User;
 import com.example.CarpathiansBlog.repo.PostRepository;
 import com.example.CarpathiansBlog.services.StorageService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,21 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.UUID;
 
 @Controller
 public class PostController {
     private final PostRepository postRepository;
-
     private final StorageService storageService;
 
-    @Autowired
     public PostController(PostRepository postRepository, StorageService storageService) {
         this.postRepository = postRepository;
         this.storageService = storageService;
@@ -43,7 +39,8 @@ public class PostController {
     }
 
     @PostMapping("/post/add-post")
-    public String loadFile(@RequestParam("file") MultipartFile file,
+    public String loadFile(@AuthenticationPrincipal User user,
+                           @RequestParam("file") MultipartFile file,
                            @RequestParam String title,
                            @RequestParam String anons,
                            @RequestParam String fullText,
@@ -60,7 +57,7 @@ public class PostController {
 
                 Path f = storageService.load("");
                 String rootPath= f.toUri().getPath();
-                System.out.println("---------"+rootPath);
+                System.out.println("---------" + rootPath);
                 File dir = new File(rootPath + File.separator );
                 // Create the file on server
                 File serverFile = new File(dir.getAbsolutePath()
@@ -76,12 +73,12 @@ public class PostController {
                 post.setFullText(fullText);
                 post.setTitle(title);
                 post.setViews(0);
+                post.setAuthor(user);
                 postRepository.save(post);
                 model.addAttribute("pageTitle", "Succeed");
                 return "add-succeed";
 
             } catch (Exception e) {
-                model.addAttribute("pageTitle", "Error");
                 return "add-error";
             }
         }

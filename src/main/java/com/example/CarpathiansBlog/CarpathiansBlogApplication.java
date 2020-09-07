@@ -9,17 +9,20 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class CarpathiansBlogApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CarpathiansBlogApplication.class, args);
-	}
+//    	public static void main(String[] args) {
+//		SpringApplication.run(CarpathiansBlogApplication.class, args);
+//	}
+    public static void main(String[] args) throws Throwable {
+        SpringApplication.run(CarpathiansBlogApplication.class, args);
+    }
 
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return (args) -> {
-			//storageService.deleteAll();
-			storageService.init();
-		};
-	}
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            //storageService.deleteAll();
+            storageService.init();
+        };
+    }
 
 }
 
