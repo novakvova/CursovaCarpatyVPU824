@@ -19,6 +19,10 @@ public class Post {
     @Column(length = 10000, nullable = false)
     private String fullText;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
     private int views;
     public Long getId() {
         return id;
@@ -71,4 +75,14 @@ public class Post {
         this.views = views;
     }
 
+    public String getAuthorName(){
+        return author != null ? author.getUsername() : "none";
+    }
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 }

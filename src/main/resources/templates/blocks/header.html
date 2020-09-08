@@ -27,6 +27,16 @@
                 <a th:href="@{/post/add-post}">Add Post</a></li>
             <li th:class="${(#httpServletRequest.requestURL.toString().contains('bio')) ? 'active' : ''}">
                 <a th:href="@{/bio}">About Me</a></li>
+
+            <li th:if="${#httpServletRequest.remoteUser == null}">
+                <a class="text-primary" th:href="@{/login}">Sign In</a>
+            </li>
+
+            <li th:if="${#httpServletRequest.remoteUser != null}">
+                <a class="text-success" th:href="@{/logout}" title="logout">[[${#httpServletRequest.remoteUser}]]
+                    <i class="icon-exit_to_app" aria-hidden="true"></i></a>
+            </li>
+
         </ul>
         <ul class="social js-clone-nav">
             <li><a href="#"><span class="icon-facebook"></span></a></li>
