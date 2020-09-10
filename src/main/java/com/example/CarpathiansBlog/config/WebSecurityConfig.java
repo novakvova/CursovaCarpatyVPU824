@@ -37,19 +37,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/index", "/photos", "/bio", "/get-image/{filename:.+}").permitAll()
-                    .antMatchers("/registration").permitAll()
-                    .antMatchers("/css/**").permitAll()
-                    .antMatchers("/fonts/**").permitAll()
-                    .antMatchers("/js/**").permitAll()
-                    .antMatchers("/favicon.ico").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
+                .antMatchers("/", "/index", "/photos", "/bio", "/get-image/{filename:.+}").permitAll()
+                .antMatchers("/registration").permitAll()
+                .antMatchers("/post/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/fonts/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                    .loginPage("/login").permitAll()
-                    .and()
+                .loginPage("/login").permitAll()
+                .and()
                 .logout()
-                    .permitAll();
+                .permitAll();
     }
 
     @Override

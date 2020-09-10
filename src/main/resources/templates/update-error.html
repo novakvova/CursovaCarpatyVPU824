@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:text="Error"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <th:block th:include="blocks/style-files.html :: headerfiles"></th:block>
+</head>
+<body>
+<div class="site-wrap w-100">
+    <th:block th:insert="blocks/header :: siteMenu"></th:block>
+    <th:block th:insert="blocks/header :: header"></th:block>
+    <main class="main-content">
+        <div class="container-fluid photos">
+            <div class="row mt-3 justify-content-center">
+                <h2 class="text-danger mt-5" data-aos="fade-up">
+                    <i class="icon-bug" aria-hidden="true"></i> Something wrong!</h2>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center py-5">
+                    <p>
+                        Copyright &copy;<script th:text="'document.write(new Date().getFullYear());'"></script>
+                        All rights reserved!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div> <!-- .site-wrap -->
+
+<th:block th:include="blocks/js-files.html :: jsfiles"></th:block>
+
+</body>
+</html>

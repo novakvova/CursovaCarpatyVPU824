@@ -19,17 +19,28 @@
 
                     <div class="row" data-aos="fade-up">
                         <div class="col-md-12">
-
                             <div th:text="${post.getFullText()}"></div>
-
                             <p class="mt-4 ml-2">Author: <strong th:text="${post.getAuthorName()}"></strong></p>
                             <div class="mt-3 mb-4">
-                                <img th:src="@{'/get-image/' + ${post.getImage()}}" src="" alt="image" class="img-fluid w-100">
+                                <img th:src="@{'/get-image/' + ${post.getImage()}}" src="" alt="image"
+                                     class="img-fluid w-100">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form th:action="@{'/post/update-post/' + ${post.getId()}}" method="get"
+                                          enctype="multipart/form-data">
+                                        <input type="submit" class="btn btn-light" value="Update post"/>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <form th:action="@{'/post/delete-post/' + ${post.getId()}}" method="get">
+                                        <input type="submit" class="btn btn-dark" value="Delete post"/>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="row justify-content-center">
