@@ -20,7 +20,7 @@
     <div class="main-menu d-none">
         <ul class="js-clone-nav">
             <li th:class="${(#httpServletRequest.requestURL.toString().contains('index')) ? 'active' : ''}">
-                <a th:href="@{/index}">Home</a></li>
+                <a th:href="@{/index}">Home--</a></li>
             <li th:class="${(#httpServletRequest.requestURL.toString().contains('photos')) ? 'active' : ''}">
                 <a th:href="@{/photos}">Photos</a></li>
             <li th:class="${(#httpServletRequest.requestURL.toString().contains('add-post')) ? 'active' : ''}">
