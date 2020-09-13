@@ -42,7 +42,7 @@ public class User implements UserDetails {
     }
 
     public void addPost(Post post) {
-        post.setAuthor(this);
+        post.setUser(this);
         posts.add(post);
     }
 

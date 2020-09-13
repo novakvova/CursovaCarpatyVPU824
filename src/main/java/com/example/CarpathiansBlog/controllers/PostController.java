@@ -71,7 +71,7 @@ public class PostController {
                 post.setFullText(fullText);
                 post.setTitle(title);
                 post.setViews(0);
-                post.setAuthor(user);
+                post.setUser(user);
                 postRepository.save(post);
                 model.addAttribute("pageTitle", "Succeed");
                 return "add-succeed";
