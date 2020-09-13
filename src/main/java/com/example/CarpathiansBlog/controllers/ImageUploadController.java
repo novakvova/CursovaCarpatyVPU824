@@ -1,6 +1,7 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.services.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ImageUploadController {
 
-    private final StorageService storageService;
+    @Autowired
+    private StorageService storageService;
 
-    public ImageUploadController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    //public ImageUploadController(StorageService storageService) {
+     //   this.storageService = storageService;
+    //}
 
     @GetMapping(value = {"/get-image/{filename:.+}"})
     @ResponseBody
