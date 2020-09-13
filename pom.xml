@@ -8,6 +8,7 @@
 		<version>2.3.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>CarpathiansBlog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -74,7 +75,9 @@
     </dependencies>
 
 	<build>
+		<finalName>karpaty</finalName>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
