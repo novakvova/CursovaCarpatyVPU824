@@ -27,15 +27,15 @@ import java.util.UUID;
 
 @Controller
 public class PostController {
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private StorageService storageService;
+    //@Autowired
+    private final PostRepository postRepository;
+    //@Autowired
+    private final StorageService storageService;
 
-//    public PostController(PostRepository postRepository, StorageService storageService) {
-//        this.postRepository = postRepository;
-//        this.storageService = storageService;
-//    }
+    public PostController(PostRepository postRepository, StorageService storageService) {
+        this.postRepository = postRepository;
+        this.storageService = storageService;
+    }
 
     @GetMapping("/post/add-post")
     public String addPostTest(Model model) {
