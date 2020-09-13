@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:text="${pageTitle}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <th:block th:include="blocks/style-files.html :: headerfiles"></th:block>
+</head>
+<body>
+<div class="site-wrap w-100">
+    <th:block th:insert="blocks/header :: siteMenu"></th:block>
+    <th:block th:insert="blocks/header :: header"></th:block>
+    <main class="main-content">
+        <div class="container-fluid photos">
+            <div class="row mt-3 justify-content-center">
+                <form th:action="@{'/post/update-post/' + ${post.getId()}}" method="post" enctype="multipart/form-data">
+                    <div class="row form-group mb-5">
+                        <label class="text-dark" for="titleInput">New title:</label>
+                        <input type="text" name="title" class="form-control text-black-50" id="titleInput"
+                               aria-describedby="titleHelp" th:placeholder="${post.getTitle()}">
+                     </div>
+
+                    <div class="row form-group mb-5">
+                        <label class="text-dark" for="anonsInput">New anons:</label>
+                        <input type="text" name="anons" class="form-control text-black-50" id="anonsInput"
+                               aria-describedby="anonsHelp" th:placeholder="${post.getAnons()}">
+                    </div>
+
+                    <div class="row form-group mb-5">
+                        <label class="text-dark" for="anonsInput">New full text:</label>
+                        <textarea name="fullText" class="form-control text-black-50" id="fullText" aria-label="fullText"
+                                  aria-describedby="fullTextHelp" th:placeholder="${post.getFullText()}"></textarea>
+                    </div>
+
+                    <div class="row form-group mb-5">
+                        <label class="text-dark" for="fileInput">File to upload:</label>
+                        <input type="file" name="file" class="form-control-file" id="fileInput">
+                    </div>
+                    <div class="row form-group mb-5">
+                        <button type="submit" class="btn btn-primary">Update Post</button>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center py-5">
+                    <p>
+                        Copyright &copy;<script th:text="'document.write(new Date().getFullYear());'"></script>
+                        All rights reserved!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div> <!-- .site-wrap -->
+
+<th:block th:include="blocks/js-files.html :: jsfiles"></th:block>
+
+</body>
+</html>
