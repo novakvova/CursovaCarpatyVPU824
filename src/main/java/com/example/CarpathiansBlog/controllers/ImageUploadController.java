@@ -11,13 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ImageUploadController {
-
     @Autowired
     private StorageService storageService;
-
-    //public ImageUploadController(StorageService storageService) {
-     //   this.storageService = storageService;
-    //}
 
     @GetMapping(value = {"/get-image/{filename:.+}"})
     @ResponseBody
