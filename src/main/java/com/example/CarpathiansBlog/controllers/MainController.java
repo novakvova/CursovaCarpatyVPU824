@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
     @Autowired
     private PostRepository postRepository;
-//    public MainController(PostRepository postRepository) {
-//        this.postRepository = postRepository;
-//    }
 
     @GetMapping("/")
     public String mainRedirect(){

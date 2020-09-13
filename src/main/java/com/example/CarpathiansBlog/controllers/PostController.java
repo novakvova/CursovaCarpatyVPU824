@@ -9,14 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -31,11 +29,6 @@ public class PostController {
     private PostRepository postRepository;
     @Autowired
     private StorageService storageService;
-
-//    public PostController(PostRepository postRepository, StorageService storageService) {
-//        this.postRepository = postRepository;
-//        this.storageService = storageService;
-//    }
 
     @GetMapping("/post/add-post")
     public String addPostTest(Model model) {
