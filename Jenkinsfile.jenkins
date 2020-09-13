@@ -1,0 +1,43 @@
+#!groovy
+//  kapaty Jenkinsfile
+properties([disableConcurrentBuilds()])
+
+pipeline  {
+    agent {
+        label 'master'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+
+		stage("stop") {
+            steps {
+                echo 'Stop process ...'
+                dir('.'){
+                  sh "sudo systemctl stop karpaty"
+
+                }
+            }
+        }
+        stage("mvn") {
+            steps {
+                 echo 'Mvn ...'
+                 dir('.'){
+                      sh "mvn package"
+
+                 }
+            }
+        }
+        stage("start") {
+            steps {
+                 echo 'Start ...'
+                 dir('.'){
+                       sh "sudo systemctl start karpaty"
+
+                 }
+            }
+        }
+    }
+}
