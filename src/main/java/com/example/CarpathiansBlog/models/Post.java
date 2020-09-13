@@ -19,7 +19,7 @@ public class Post {
     @Column(length = 10000, nullable = false)
     private String fullText;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
 
