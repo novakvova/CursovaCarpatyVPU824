@@ -24,6 +24,7 @@ public class Post {
     private User user;
 
     private int views;
+
     public Long getId() {
         return id;
     }
