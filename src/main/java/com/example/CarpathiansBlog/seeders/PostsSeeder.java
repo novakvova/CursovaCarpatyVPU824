@@ -21,6 +21,8 @@ public class PostsSeeder {
     public void run() {
         User user = userRepository.findByUsername("smethan");
         if (user != null) {
+            if(postRepository.findByTitle("Post 1") != null)
+                return;
             //set 1 post
             Post post = new Post();
             post.setTitle("Post 1");

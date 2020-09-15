@@ -1,13 +1,7 @@
 package com.example.CarpathiansBlog.models;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
 import java.util.*;
-//import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -20,14 +14,13 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    @Size(min = 4)
     private String password;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "{errors.invalid_email}")
     private String email;
 
     private boolean active;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
