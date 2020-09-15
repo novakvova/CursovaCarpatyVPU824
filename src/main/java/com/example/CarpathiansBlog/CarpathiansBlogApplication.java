@@ -30,7 +30,7 @@ public class CarpathiansBlogApplication {
             storageService.init();
             rolesSeeder.run();
             usersSeeder.run();
-            // postsSeeder.run();
+            postsSeeder.run();
         };
     }
 

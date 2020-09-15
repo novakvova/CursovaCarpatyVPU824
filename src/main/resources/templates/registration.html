@@ -14,16 +14,47 @@
     <main class="main-content">
         <div class="container-fluid photos">
             <div class="row mt-3 justify-content-center">
-                <form method="post" th:action="@{/registration}" data-aos="fade-up">
+                <!--/*@thymesVar id="userDto" type="com.example.CarpathiansBlog.dto.UserDto"*/-->
+                <form th:action="@{/registration}" th:object="${userDto}" method="post" data-aos="fade-up">
                     <h2 class="text-dark mb-3">Registration</h2>
 
                     <div class="row form-group mb-3 text-danger" th:if="${message}">
-                        User exists!
+                        <span th:text="${message}"></span>
                     </div>
 
-                    <div><label class="text-dark"> User Name : <input type="text" name="username"/> </label></div>
-                    <div><label class="text-dark"> User Email : <input type="email" name="email"/> </label></div>
-                    <div><label class="text-dark"> Password: <input type="password" name="password"/> </label></div>
+                    <div><label class="text-dark"> User Name : <input type="text" name="username" th:field="*{username}"/> </label></div>
+                    <div class="row form-group mb-3 text-danger" th:if="${#fields.hasErrors('username')}" >
+                        <span th:errors="*{username}"></span>
+                    </div>
+
+                    <div><label class="text-dark"> User Email : <input type="email" name="email" th:field="*{email}"/> </label></div>
+                    <div class="row form-group mb-3 text-danger" th:if="${#fields.hasErrors('email')}" >
+                        <span th:errors="*{email}"></span>
+                    </div>
+
+                    <div><label class="text-dark"> Password: <input type="password" name="password" th:field="*{password}"/> </label></div>
+                    <div class="row form-group text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span th:errors="*{password}"></span>
+                    </div>
+                    <div class="row form-group mt-0 mb-0 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>Password length should be in between 8 and 16 characters</span>
+                    </div>
+                    <div class="row form-group mt-0 mb-0 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>No whitespace allowed</span>
+                    </div>
+                    <div class="row form-group mt-0 mb-0 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>At least one Upper-case character</span>
+                    </div>
+                    <div class="row form-group mt-0 mb-0 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>At least one Lower-case character</span>
+                    </div>
+                    <div class="row form-group mt-0 mb-0 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>At least one digit</span>
+                    </div>
+                    <div class="row form-group mt-0 mb-3 text-danger" th:if="${#fields.hasErrors('password')}" >
+                        <span>At least one special character</span>
+                    </div>
+
                     <div>
                         <input class="text-success" type="submit" value="Sign Up"/>
                     </div>

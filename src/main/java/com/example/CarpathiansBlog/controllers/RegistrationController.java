@@ -1,5 +1,6 @@
 package com.example.CarpathiansBlog.controllers;
 
+import com.example.CarpathiansBlog.dto.UserDto;
 import com.example.CarpathiansBlog.models.Role;
 import com.example.CarpathiansBlog.models.User;
 import com.example.CarpathiansBlog.repo.RoleRepository;
@@ -8,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -22,7 +26,7 @@ public class RegistrationController {
     private RoleRepository roleRepository;
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(UserDto userDto) {
         return "registration";
     }
 
@@ -32,17 +36,21 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+    public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+
+        if (userRepository.findByEmail(userDto.getEmail()) != null || userRepository.findByUsername(userDto.getUsername()) != null) {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
 
         try {
             User userNew = new User();
-            userNew.setEmail(user.getEmail());
-            userNew.setUsername(user.getUsername());
-            userNew.setPassword(passwordEncoder.encode(user.getPassword()));
+            userNew.setEmail(userDto.getEmail());
+            userNew.setUsername(userDto.getUsername());
+            userNew.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userNew.setActive(true);
             Role roleAdmin = roleRepository.findByName("ADMIN");
             userNew.addRole(roleAdmin);
