@@ -1,12 +1,13 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.models.Post;
-import com.example.CarpathiansBlog.models.User;
 import com.example.CarpathiansBlog.repo.PostRepository;
+import com.example.CarpathiansBlog.services.MyUserDetails;
 import com.example.CarpathiansBlog.services.StorageService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,13 +38,16 @@ public class PostController {
     }
 
     @PostMapping("/post/add-post")
-    public String loadFile(@AuthenticationPrincipal User user,
-                           @RequestParam("file") MultipartFile file,
+    public String loadFile(@RequestParam("file") MultipartFile file,
                            @RequestParam String title,
                            @RequestParam String anons,
                            @RequestParam String fullText,
                            Model model
     ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!auth.isAuthenticated())
+            return "add-error";
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
 
         Post post;
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
@@ -71,7 +75,7 @@ public class PostController {
                 post.setFullText(fullText);
                 post.setTitle(title);
                 post.setViews(0);
-                post.setUser(user);
+                post.setUser(myUserDetails.getUser());
                 postRepository.save(post);
                 model.addAttribute("pageTitle", "Succeed");
                 return "add-succeed";
