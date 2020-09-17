@@ -1,13 +1,13 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.models.Post;
-import com.example.CarpathiansBlog.models.Role;
-import com.example.CarpathiansBlog.models.User;
 import com.example.CarpathiansBlog.repo.PostRepository;
+import com.example.CarpathiansBlog.services.MyUserDetails;
 import com.example.CarpathiansBlog.services.StorageService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +21,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import javax.persistence.*;
-import java.util.*;
 
 @Controller
 public class PostController {
@@ -41,13 +38,16 @@ public class PostController {
     }
 
     @PostMapping("/post/add-post")
-    public String loadFile(@AuthenticationPrincipal User user,
-                           @RequestParam("file") MultipartFile file,
+    public String loadFile(@RequestParam("file") MultipartFile file,
                            @RequestParam String title,
                            @RequestParam String anons,
                            @RequestParam String fullText,
                            Model model
     ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!auth.isAuthenticated())
+            return "add-error";
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
 
         Post post;
         if (file != null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
@@ -75,7 +75,7 @@ public class PostController {
                 post.setFullText(fullText);
                 post.setTitle(title);
                 post.setViews(0);
-                post.setUser(user);
+                post.setUser(myUserDetails.getUser());
                 postRepository.save(post);
                 model.addAttribute("pageTitle", "Succeed");
                 return "add-succeed";
@@ -97,13 +97,12 @@ public class PostController {
     }
 
     @GetMapping("/post/delete-post/{id}")
-    public String deletePost(@PathVariable("id") long id,
-                             Model model) {
+    public String deletePost(@PathVariable("id") long id, Model model) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
-            postRepository.delete(post);
-            model.addAttribute("post", postRepository.findAll());
-            return "redirect:/";
+        postRepository.delete(post);
+        model.addAttribute("post", postRepository.findAll());
+        return "redirect:/";
     }
 
     @GetMapping("/post/update-post/{id}")
@@ -117,8 +116,7 @@ public class PostController {
     }
 
     @PostMapping("/post/update-post/{id}")
-    public String updatePost(@AuthenticationPrincipal User user,
-                             @PathVariable("id") long id,
+    public String updatePost(@PathVariable("id") long id,
                              @Valid Post post,
                              @RequestParam("file") MultipartFile file,
                              @RequestParam String title,
@@ -145,18 +143,12 @@ public class PostController {
                 stream.write(bytes);
                 stream.close();
 
-                List<Role> userRoles = user.getRoles();
-                if (userRoles.contains("USER")) {
-                    return "update-error";
-                }
-                else {
-
                 post.setTitle(title);
                 post.setAnons(anons);
                 post.setFullText(fullText);
                 post.setImage(name);
 
-                postRepository.save(post);}
+                postRepository.save(post);
                 model.addAttribute("posts", postRepository.findAll());
 
                 return "redirect:/post/{id}";
