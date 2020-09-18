@@ -26,7 +26,10 @@
 
                     <div><label class="text-dark"> User Name : <input type="text" name="username"/> </label></div>
                     <div><label class="text-dark"> Password: <input type="password" name="password"/> </label></div>
+                    <div><label class="text-secondary"> Remember me?
+                        <input type="checkbox" name="remember-me"/> </label></div>
                     <div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <input class="text-success" type="submit" value="Sign In"/>
                         <a class="ml-5 text-primary" th:href="@{/registration}">Sing Up</a>
                     </div>
