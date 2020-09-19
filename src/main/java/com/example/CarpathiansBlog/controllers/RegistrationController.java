@@ -52,8 +52,13 @@ public class RegistrationController {
             userNew.setUsername(userDto.getUsername());
             userNew.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userNew.setActive(true);
-            Role roleAdmin = roleRepository.findByName("ADMIN");
-            userNew.addRole(roleAdmin);
+
+//            Role roleAdmin = roleRepository.findByName("ADMIN");
+//            userNew.addRole(roleAdmin);
+
+            Role roleUser = roleRepository.findByName("USER");
+            userNew.addRole(roleUser);
+
             userRepository.save(userNew);
             return "redirect:/index";
 
