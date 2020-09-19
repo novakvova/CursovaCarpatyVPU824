@@ -77,7 +77,7 @@ public class PostController {
                 post.setViews(0);
                 post.setUser(myUserDetails.getUser());
                 postRepository.save(post);
-                model.addAttribute("pageTitle", "Succeed");
+                model.addAttribute("message", "You added the post successfully!");
                 return "add-succeed";
 
             } catch (Exception e) {

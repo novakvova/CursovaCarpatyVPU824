@@ -1,16 +1,14 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.dto.UserDto;
-import com.example.CarpathiansBlog.models.Role;
-import com.example.CarpathiansBlog.models.User;
-import com.example.CarpathiansBlog.repo.RoleRepository;
 import com.example.CarpathiansBlog.repo.UserRepository;
+import com.example.CarpathiansBlog.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -19,11 +17,9 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
     @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private RoleRepository roleRepository;
 
     @GetMapping("/registration")
     public String registration(UserDto userDto) {
@@ -46,19 +42,23 @@ public class RegistrationController {
             return "registration";
         }
 
-        try {
-            User userNew = new User();
-            userNew.setEmail(userDto.getEmail());
-            userNew.setUsername(userDto.getUsername());
-            userNew.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            userNew.setActive(true);
-            Role roleAdmin = roleRepository.findByName("ADMIN");
-            userNew.addRole(roleAdmin);
-            userRepository.save(userNew);
-            return "redirect:/index";
-
-        } catch (Exception ex) {
+        if (userDetailsService.addUser(userDto)) {
+            model.addAttribute("message", "User successfully registered! Please, confirm your account! Check your email!");
+            return "add-succeed";
+        } else {
             return "redirect:/add-error";
         }
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateUser(@PathVariable String code, Model model) {
+        boolean isActivated = userDetailsService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("message", "User successfully activated!");
+            return "add-succeed";
+        }
+        model.addAttribute("message", "Activation code is not found!");
+        return "login";
     }
 }

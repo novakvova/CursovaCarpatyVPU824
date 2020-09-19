@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title th:text="${pageTitle}"></title>
+    <title>Succeed</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -14,8 +14,7 @@
     <main class="main-content">
         <div class="container-fluid photos">
             <div class="row mt-3 justify-content-center">
-                <h2 class="text-success mt-5" data-aos="fade-up">You added the post successfully!
-                    <i class="icon-smile-o" aria-hidden="true"></i></h2>
+                <h2 class="text-success mt-5" data-aos="fade-up" th:if="${message}" th:text="${message}"><i class="icon-smile-o" aria-hidden="true"></i></h2>
             </div>
 
             <div class="row justify-content-center">
