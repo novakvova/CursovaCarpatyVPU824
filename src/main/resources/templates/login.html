@@ -17,6 +17,10 @@
                 <form method="post" th:action="@{/login}" data-aos="fade-up">
                     <h2 class="text-dark mb-3">Login</h2>
 
+                    <div class="row form-group mb-3 text-danger" th:if="${message}">
+                        <span th:text="${message}"></span>
+                    </div>
+
                     <div class="row form-group mb-3 text-danger" th:if="${param.error}">
                         Invalid username and password.
                     </div>

@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
@@ -58,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 //                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/photos", "/bio", "/get-image/{filename:.+}").permitAll()
+                .antMatchers("/", "/index", "/photos", "/bio", "/get-image/{filename:.+}", "/activate/*").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()

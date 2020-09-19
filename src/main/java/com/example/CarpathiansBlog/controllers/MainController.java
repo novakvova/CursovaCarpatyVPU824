@@ -1,4 +1,5 @@
 package com.example.CarpathiansBlog.controllers;
+
 import com.example.CarpathiansBlog.models.Post;
 import com.example.CarpathiansBlog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ public class MainController {
     private PostRepository postRepository;
 
     @GetMapping("/")
-    public String mainRedirect(){
+    public String mainRedirect() {
         return "redirect:/index";
     }
 
@@ -37,5 +38,4 @@ public class MainController {
         model.addAttribute("pageTitle", "About Us");
         return "bio";
     }
-
 }
