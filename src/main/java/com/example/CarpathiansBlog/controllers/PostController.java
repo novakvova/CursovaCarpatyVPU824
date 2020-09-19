@@ -1,6 +1,8 @@
 package com.example.CarpathiansBlog.controllers;
 
 import com.example.CarpathiansBlog.models.Post;
+import com.example.CarpathiansBlog.models.Role;
+import com.example.CarpathiansBlog.models.User;
 import com.example.CarpathiansBlog.repo.PostRepository;
 import com.example.CarpathiansBlog.services.MyUserDetails;
 import com.example.CarpathiansBlog.services.StorageService;
@@ -21,6 +23,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -100,9 +103,20 @@ public class PostController {
     public String deletePost(@PathVariable("id") long id, Model model) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
-        postRepository.delete(post);
-        model.addAttribute("post", postRepository.findAll());
-        return "redirect:/";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!auth.isAuthenticated())
+            return "add-error";
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        User user1 = myUserDetails.getUser();
+      List<Role> userRoles = user1.getRoles();
+        if(userRoles.stream().filter(o -> o.getName().equals("USER")).findFirst().isPresent())
+            return "add-error";
+        else {
+
+            postRepository.delete(post);
+            model.addAttribute("post", postRepository.findAll());
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/post/update-post/{id}")
@@ -111,6 +125,15 @@ public class PostController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
         model.addAttribute("pageTitle", "Posts page");
         model.addAttribute("post", post);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!auth.isAuthenticated())
+            return "add-error";
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        User user1 = myUserDetails.getUser();
+        List<Role> userRoles = user1.getRoles();
+        if(userRoles.stream().filter(o -> o.getName().equals("USER")).findFirst().isPresent())
+            return "add-error";
+else
         return "update-post";
 
     }
