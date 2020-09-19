@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 
@@ -32,7 +33,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model) {
+    public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -41,8 +42,9 @@ public class RegistrationController {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
-
-        if (userDetailsService.addUser(userDto)) {
+        // get site url
+        String siteUrl = request.getRequestURL().substring(0, request.getRequestURL().indexOf(request.getRequestURI()));
+        if (userDetailsService.addUser(userDto, siteUrl)) {
             model.addAttribute("message", "User successfully registered! Please, confirm your account! Check your email!");
             return "add-succeed";
         } else {

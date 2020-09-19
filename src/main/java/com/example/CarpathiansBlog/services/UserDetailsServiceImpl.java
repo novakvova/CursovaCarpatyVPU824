@@ -18,9 +18,6 @@ import java.util.UUID;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Value("${site.url}")
-    private String siteUrl;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -41,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new MyUserDetails(user);
     }
 
-    public boolean addUser(UserDto userDto) {
+    public boolean addUser(UserDto userDto, String siteUrl) {
         User userDB = userRepository.findByUsername(userDto.getUsername());
         if (userDB != null) {
             return false;
